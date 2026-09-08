@@ -11,6 +11,11 @@ app = FastAPI()
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / "templates"
 DATA_DIR = BASE_DIR / "data"
+STATIC_DIR = BASE_DIR / "static"
+
+# Mount static files correctly right after app initialization
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
@@ -29,6 +34,8 @@ def read_json(filename: str):
     return {}
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/api", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
 def read_root(request: Request, admin: Optional[str] = None):
     lectures = read_json("lectures.json")
     if not isinstance(lectures, list):
@@ -112,6 +119,3 @@ def add_lecture(
         
     redirect_url = f"/?admin={admin_secret}" if admin_secret else "/"
     return RedirectResponse(url=redirect_url, status_code=303)
-STATIC_DIR = BASE_DIR / "static"
-if STATIC_DIR.exists():
-    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
