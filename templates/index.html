@@ -34,28 +34,28 @@
       <h2 class="text-xl font-bold text-white tracking-tight">{{ daily.next_topic.topic }}</h2>
 
       <!-- Book References Grid -->
-      <!-- Book References Grid -->
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-  <a href="/static/books/swokowski.pdf#page={{ daily.next_topic.swokowski_page }}" 
-     target="_blank" 
-     class="group bg-slate-950/80 border border-slate-800 hover:border-indigo-500 p-3 rounded-lg transition block">
-    <div class="flex justify-between items-center">
-      <span class="text-xs font-bold text-slate-400">Swokowski (1983)</span>
-      <span class="text-[10px] text-indigo-400 group-hover:underline">Open PDF &rarr;</span>
-    </div>
-    <div class="text-sm font-mono text-indigo-300 mt-0.5">{{ daily.next_topic.swokowski_label }}</div>
-  </a>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <a href="{{ daily.next_topic.swokowski_url }}" 
+           target="_blank" 
+           class="group bg-slate-950/80 border border-slate-800 hover:border-indigo-500 p-3 rounded-lg transition block">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-slate-400">Swokowski (1983)</span>
+            <span class="text-[10px] text-indigo-400 group-hover:underline">Open PDF &rarr;</span>
+          </div>
+          <div class="text-sm font-mono text-indigo-300 mt-0.5">{{ daily.next_topic.swokowski_ref or daily.next_topic.swokowski_label }}</div>
+        </a>
 
-  <a href="/static/books/thomas.pdf#page={{ daily.next_topic.thomas_page }}" 
-     target="_blank" 
-     class="group bg-slate-950/80 border border-slate-800 hover:border-indigo-500 p-3 rounded-lg transition block">
-    <div class="flex justify-between items-center">
-      <span class="text-xs font-bold text-slate-400">Thomas' Calculus</span>
-      <span class="text-[10px] text-indigo-400 group-hover:underline">Open PDF &rarr;</span>
+        <a href="{{ daily.next_topic.thomas_url }}" 
+           target="_blank" 
+           class="group bg-slate-950/80 border border-slate-800 hover:border-indigo-500 p-3 rounded-lg transition block">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-slate-400">Thomas' Calculus</span>
+            <span class="text-[10px] text-indigo-400 group-hover:underline">Open PDF &rarr;</span>
+          </div>
+          <div class="text-sm font-mono text-indigo-300 mt-0.5">{{ daily.next_topic.thomas_ref or daily.next_topic.thomas_label }}</div>
+        </a>
+      </div>
     </div>
-    <div class="text-sm font-mono text-indigo-300 mt-0.5">{{ daily.next_topic.thomas_label }}</div>
-  </a>
-</div>
     {% endif %}
 
     <!-- Navigation Tabs -->
@@ -90,21 +90,23 @@
                 <td class="p-3.5 font-semibold text-indigo-400">{{ row.day }}</td>
                 <td class="p-3.5 font-medium text-white">{{ row.topic }}</td>
                 <td class="p-3.5 font-mono">
-                  {% if row.swokowski_page %}
-                  <a href="/static/books/swokowski.pdf#page={{ row.swokowski_page }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 hover:underline">
-                    {{ row.swokowski_label }} &rarr;
+                  {% set swok_text = row.swokowski_ref or row.swokowski_label or row.swokowski %}
+                  {% if row.swokowski_url %}
+                  <a href="{{ row.swokowski_url }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 hover:underline">
+                    {{ swok_text }} &rarr;
                   </a>
                   {% else %}
-                  <span class="text-slate-400">{{ row.swokowski }}</span>
+                  <span class="text-slate-300">{{ swok_text }}</span>
                   {% endif %}
                 </td>
                 <td class="p-3.5 font-mono">
-                  {% if row.thomas_page %}
-                  <a href="/static/books/thomas.pdf#page={{ row.thomas_page }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 hover:underline">
-                    {{ row.thomas_label }} &rarr;
+                  {% set thom_text = row.thomas_ref or row.thomas_label or row.thomas %}
+                  {% if row.thomas_url %}
+                  <a href="{{ row.thomas_url }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 hover:underline">
+                    {{ thom_text }} &rarr;
                   </a>
                   {% else %}
-                  <span class="text-slate-400">{{ row.thomas }}</span>
+                  <span class="text-slate-300">{{ thom_text }}</span>
                   {% endif %}
                 </td>
                 <td class="p-3.5 text-xs text-slate-300">{{ row.problems }}</td>
@@ -119,6 +121,7 @@
         </table>
       </div>
     </section>
+
     <!-- TAB 2: Completed Lectures Feed -->
     <section id="section-lectures" class="space-y-6 hidden">
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
