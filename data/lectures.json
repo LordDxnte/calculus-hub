@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "date": "September 8, 2026",
+    "topic": "Course Overview, What is Calculus & Functions",
+    "week": 1,
+    "core_points": [
+      "Calculus comes from the Latin word for 'pebble' (ancient counting tool).",
+      "Calculus deals with dynamic change and motion, contrasting static algebra.",
+      "Real number line: continuous points from -∞ to +∞.",
+      "Functions: y = f(x) where x is input and y is output."
+    ],
+    "pillars": [
+      {
+        "name": "Differential Calculus",
+        "desc": "Splitting quantities into infinitesimally small pieces to compute rates of change."
+      },
+      {
+        "name": "Integral Calculus",
+        "desc": "Accumulating and summing small pieces to evaluate total areas and volumes."
+      }
+    ],
+    "reading": "Thomas/Stewart Calculus: Chapter 1 (Functions and Models)",
+    "practice_problems": "Review real line intervals, domain, and range."
+  }
+]

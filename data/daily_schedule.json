@@ -1,0 +1,32 @@
+{
+  "next_topic": {
+    "date": "September 9, 2026",
+    "topic": "Real Numbers, Intervals & Functions (y = f(x))",
+    "status": "Upcoming Tomorrow",
+    "swokowski_label": "Sec 1.1 (p. 1) & Sec 1.4 (p. 24)",
+    "swokowski_page": 17,
+    "thomas_label": "Sec 1.1 (p. 1) & Sec 1.3 (p. 19)",
+    "thomas_page": 27,
+    "focus_note": "Focus on inequalities with absolute values, natural domains of rational/root functions, and vertical line tests."
+  },
+  "upcoming_schedule": [
+    {
+      "day": "Day 1 (Sept 8)",
+      "topic": "Course Overview & Nature of Calculus",
+      "swokowski_label": "Intro (p. ix)",
+      "swokowski_page": 11,
+      "thomas_label": "Sec 2.1 (p. 73)",
+      "thomas_page": 99,
+      "problems": "Review course policy and syllabus breakdown"
+    },
+    {
+      "day": "Day 2 (Sept 9)",
+      "topic": "Real Numbers, Inequalities & Function Basics",
+      "swokowski_label": "Sec 1.1 & 1.4",
+      "swokowski_page": 17,
+      "thomas_label": "Sec 1.1 & 1.3",
+      "thomas_page": 27,
+      "problems": "Swokowski p. 8: #7-22; Thomas p. 8: #5-12, p. 26: #1-6"
+    }
+  ]
+}
