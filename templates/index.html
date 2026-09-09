@@ -21,6 +21,9 @@
             throwOnError: false
           });"></script>
 
+  <!-- Desmos Embedded Calculator API -->
+  <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b149e4d779bb0ca93694"></script>
+
   <style>
     body { font-family: 'Inter', sans-serif; }
     code, .font-mono { font-family: 'JetBrains Mono', monospace; }
@@ -32,7 +35,7 @@
   <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[650px] h-[320px] bg-indigo-600/15 blur-[120px] pointer-events-none rounded-full -z-10"></div>
   <div class="fixed top-72 right-1/4 w-[400px] h-[250px] bg-cyan-600/10 blur-[130px] pointer-events-none rounded-full -z-10"></div>
 
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-9">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
     
     <!-- Title Header -->
     <header class="text-center space-y-3 pb-2">
@@ -45,6 +48,17 @@
       </h1>
       <p class="text-slate-400 text-sm sm:text-base max-w-lg mx-auto">Daily lecture schedule, textbook reading assignments & exam roadmap.</p>
       
+      <!-- Live Progress Bar (Persisted in localStorage) -->
+      <div class="max-w-xs mx-auto pt-2 space-y-1.5">
+        <div class="flex justify-between items-center text-[11px] font-mono text-slate-400">
+          <span>Personal Study Progress</span>
+          <span id="progress-percent" class="text-indigo-400 font-bold">0%</span>
+        </div>
+        <div class="w-full h-2 bg-slate-900 rounded-full border border-slate-800 overflow-hidden p-0.5">
+          <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
+
       {% if is_admin %}
       <div class="inline-flex items-center gap-2 mt-2 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-amber-400 text-xs font-mono">
         <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
@@ -77,6 +91,7 @@
         {% endif %}
       </div>
 
+      <!-- Book Reference Action Box -->
       {% if daily.next_topic.thomas_url %}
       <div class="pt-2">
         <a href="{{ daily.next_topic.thomas_url }}" 
@@ -101,10 +116,11 @@
     </div>
     {% endif %}
 
-    <!-- Navigation Tabs -->
+    <!-- Segmented Navigation Tabs -->
     <div class="flex items-center gap-1.5 p-1.5 bg-slate-900/90 border border-slate-800/80 rounded-xl max-w-fit mx-auto sm:mx-0 overflow-x-auto">
       <button onclick="switchTab('schedule')" id="tab-schedule" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition bg-indigo-600 text-white shadow-sm">Daily Schedule</button>
       <button onclick="switchTab('lectures')" id="tab-lectures" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-400 hover:text-slate-200">Completed Lectures</button>
+      <button onclick="switchTab('grapher')" id="tab-grapher" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-400 hover:text-slate-200">Interactive Grapher</button>
       <button onclick="switchTab('plan')" id="tab-plan" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-400 hover:text-slate-200">16-Week Roadmap</button>
       
       {% if is_admin %}
@@ -214,7 +230,7 @@
             </ul>
           </div>
 
-          <!-- Pillars Grid -->
+          <!-- Optional Pillars -->
           {% if lecture.pillars and lecture.pillars|length > 0 %}
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             {% for pillar in lecture.pillars %}
@@ -226,7 +242,7 @@
           </div>
           {% endif %}
 
-          <!-- Common Exam Pitfalls Callout Block -->
+          <!-- Common Pitfalls Callout -->
           {% if lecture.common_mistakes and lecture.common_mistakes|length > 0 %}
           <aside class="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-2">
             <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-300">
@@ -261,7 +277,7 @@
           </div>
           {% endif %}
 
-          <!-- Board / Note Scans -->
+          <!-- Physical Handwritten & Whiteboard Notes (Opens in Lightbox) -->
           {% if lecture.physical_notes and lecture.physical_notes|length > 0 %}
           <div class="pt-3 border-t border-slate-800/70 flex flex-col sm:flex-row sm:items-center gap-2">
             <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
@@ -270,10 +286,10 @@
             </span>
             <div class="flex flex-wrap gap-2">
               {% for note in lecture.physical_notes %}
-              <a href="{{ note.url }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition shadow-sm">
+              <button onclick="openLightbox('{{ note.url }}', '{{ lecture.topic }} &bull; {{ note.title }}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition shadow-sm">
                 <span>{{ note.title }}</span>
-                <span class="text-amber-400/70">&nearr;</span>
-              </a>
+                <svg class="w-3 h-3 text-amber-400/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+              </button>
               {% endfor %}
             </div>
           </div>
@@ -306,12 +322,46 @@
           </div>
           {% endif %}
 
+          <!-- Self-Check Interactivity: Practice & Note Completion Checkboxes -->
+          <div class="pt-3 border-t border-slate-800/70 flex flex-wrap items-center gap-4 text-xs font-mono">
+            <label class="inline-flex items-center gap-2 cursor-pointer select-none text-slate-400 hover:text-slate-200 transition">
+              <input type="checkbox" data-track-id="lec_{{ lecture.id }}_notes" onchange="toggleProgress(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-indigo-600 focus:ring-0 focus:ring-offset-0 transition cursor-pointer">
+              <span>Mark Notes Reviewed</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer select-none text-slate-400 hover:text-slate-200 transition">
+              <input type="checkbox" data-track-id="lec_{{ lecture.id }}_practice" onchange="toggleProgress(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-cyan-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer">
+              <span>Mark Homework Solved</span>
+            </label>
+          </div>
+
         </article>
         {% endfor %}
       </div>
     </section>
 
-    <!-- TAB 3: 16-Week Plan -->
+    <!-- TAB 3: Interactive Desmos Function Grapher -->
+    <section id="section-grapher" class="space-y-4 hidden">
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-1">
+        <h3 class="text-lg font-bold text-white tracking-tight">Interactive Function Calculator</h3>
+        <span class="text-xs text-slate-400 font-mono">Powered by Desmos Engine</span>
+      </div>
+      
+      <div class="p-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-3 backdrop-blur">
+        <p class="text-xs text-slate-400 leading-relaxed">Use this coordinate grid to test function domain/range, observe vertical/horizontal shifts $f(x - c) + d$, and inspect absolute value transformations $|f(x)|$.</p>
+        
+        <!-- Preset Function Chips -->
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button onclick="setGraphPreset('abs')" class="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-xs font-mono text-indigo-300 hover:border-indigo-500 transition">y = |x - 2|</button>
+          <button onclick="setGraphPreset('quad')" class="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-xs font-mono text-indigo-300 hover:border-indigo-500 transition">y = x^2 - 4</button>
+          <button onclick="setGraphPreset('rational')" class="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-xs font-mono text-indigo-300 hover:border-indigo-500 transition">y = 1 / (x - 1)</button>
+          <button onclick="setGraphPreset('piecewise')" class="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-xs font-mono text-indigo-300 hover:border-indigo-500 transition">Piecewise: {x < 0: -x, x >= 0: x^2}</button>
+        </div>
+
+        <div id="calculator-container" class="w-full h-[480px] rounded-xl overflow-hidden border border-slate-800 shadow-2xl"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: 16-Week Plan -->
     <section id="section-plan" class="space-y-4 hidden">
       <div class="flex justify-between items-center mb-2">
         <h3 class="text-lg font-bold text-white tracking-tight">16-Week Semester Plan</h3>
@@ -334,10 +384,9 @@
       {% endfor %}
     </section>
 
-    <!-- TAB 4: Admin Controls -->
+    <!-- TAB 5: Admin Controls -->
     {% if is_admin %}
     <section id="section-admin" class="space-y-6 hidden">
-      <!-- Update Banner Form -->
       <div class="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-6 space-y-4 shadow-xl">
         <div class="border-b border-slate-800 pb-3">
           <h3 class="text-base font-bold text-amber-300">Update "Next Lecture" Banner</h3>
@@ -375,7 +424,6 @@
         </form>
       </div>
 
-      <!-- Add Completed Lecture Form -->
       <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
         <div class="border-b border-slate-800 pb-3">
           <h3 class="text-base font-bold text-white">Post Completed Lecture to Archive</h3>
@@ -444,6 +492,20 @@
 
   </div>
 
+  <!-- Note Scan Lightbox Modal -->
+  <div id="lightbox-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center p-3 sm:p-6 hidden">
+    <div class="w-full max-w-4xl flex justify-between items-center mb-3 text-slate-300">
+      <span id="lightbox-title" class="text-xs sm:text-sm font-mono text-amber-300 font-semibold truncate">Whiteboard Notes</span>
+      <div class="flex items-center gap-3">
+        <a id="lightbox-download" href="#" target="_blank" class="text-xs text-slate-400 hover:text-white underline">Open Original &nearr;</a>
+        <button onclick="closeLightbox()" class="text-slate-400 hover:text-white text-2xl font-bold px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800">&times;</button>
+      </div>
+    </div>
+    <div class="relative max-w-4xl max-h-[82vh] overflow-auto rounded-xl border border-slate-800 bg-slate-950 flex items-center justify-center p-1">
+      <img id="lightbox-img" src="" alt="Handwritten notes scan" class="max-w-full max-h-[80vh] object-contain rounded select-none">
+    </div>
+  </div>
+
   <!-- Staff Login Modal -->
   <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
@@ -458,9 +520,12 @@
     </div>
   </div>
 
+  <!-- Interactive Scripts: Tabs, LocalStorage Tracker, Lightbox & Desmos -->
   <script>
+    let desmosCalc = null;
+
     function switchTab(tabId) {
-      const tabs = ['schedule', 'lectures', 'plan'{% if is_admin %}, 'admin'{% endif %}];
+      const tabs = ['schedule', 'lectures', 'grapher', 'plan'{% if is_admin %}, 'admin'{% endif %}];
       tabs.forEach(t => {
         const el = document.getElementById('section-' + t);
         const btn = document.getElementById('tab-' + t);
@@ -477,7 +542,109 @@
         activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
         activeBtn.classList.remove('text-slate-400');
       }
+
+      // Initialize Desmos once tab is visible
+      if (tabId === 'grapher' && !desmosCalc) {
+        initDesmos();
+      }
     }
+
+    function initDesmos() {
+      const elt = document.getElementById('calculator-container');
+      if (elt && window.Desmos) {
+        desmosCalc = Desmos.GraphingCalculator(elt, {
+          keypad: true,
+          expressions: true,
+          settingsMenu: false,
+          invertedColors: true
+        });
+        setGraphPreset('abs');
+      }
+    }
+
+    function setGraphPreset(type) {
+      if (!desmosCalc) return;
+      desmosCalc.setBlank();
+      if (type === 'abs') {
+        desmosCalc.setExpression({ id: 'f1', latex: 'y = |x - 2|' });
+      } else if (type === 'quad') {
+        desmosCalc.setExpression({ id: 'f1', latex: 'y = x^2 - 4' });
+      } else if (type === 'rational') {
+        desmosCalc.setExpression({ id: 'f1', latex: 'y = \\frac{1}{x - 1}' });
+      } else if (type === 'piecewise') {
+        desmosCalc.setExpression({ id: 'f1', latex: 'y = \\{x < 0: -x, x \\ge 0: x^2\\}' });
+      }
+    }
+
+    // --- Lightbox Functions ---
+    function openLightbox(url, title) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const titleEl = document.getElementById('lightbox-title');
+      const dl = document.getElementById('lightbox-download');
+      
+      img.src = url;
+      titleEl.innerText = title;
+      dl.href = url;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // --- Progress Tracker (localStorage) ---
+    const STORAGE_KEY = 'calc_hub_study_progress';
+
+    function getSavedProgress() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function toggleProgress(checkbox) {
+      const trackId = checkbox.getAttribute('data-track-id');
+      const current = getSavedProgress();
+      current[trackId] = checkbox.checked;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const checkboxes = document.querySelectorAll('input[data-track-id]');
+      if (checkboxes.length === 0) return;
+
+      const current = getSavedProgress();
+      let checkedCount = 0;
+
+      checkboxes.forEach(cb => {
+        const id = cb.getAttribute('data-track-id');
+        if (current[id] === true) {
+          cb.checked = true;
+          checkedCount++;
+        } else {
+          cb.checked = false;
+        }
+      });
+
+      const pct = Math.round((checkedCount / checkboxes.length) * 100);
+      const label = document.getElementById('progress-percent');
+      const bar = document.getElementById('progress-bar-fill');
+      if (label) label.innerText = pct + '%';
+      if (bar) bar.style.width = pct + '%';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateProgressBar();
+    });
   </script>
 </body>
 </html>
