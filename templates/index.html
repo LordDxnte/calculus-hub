@@ -63,7 +63,7 @@
         {% endif %}
       </div>
 
-      <!-- Book Reference Action Box (Thomas' Calculus) -->
+      <!-- Book Reference Action Box -->
       <div class="pt-2">
         <a href="{{ daily.next_topic.thomas_url }}" 
            target="_blank" 
@@ -173,9 +173,12 @@
         </div>
       </div>
 
-      <div class="space-y-4">
+      <!-- Lectures Feed -->
+      <div class="space-y-5">
         {% for lecture in lectures %}
         <article class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-md backdrop-blur">
+          
+          <!-- Lecture Header -->
           <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-800/70 pb-3.5">
             <div>
               <span class="text-[11px] font-mono uppercase bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2 py-0.5 rounded">Week {{ lecture.week }}</span>
@@ -184,6 +187,7 @@
             <span class="text-xs text-slate-400 font-mono">{{ lecture.date }}</span>
           </div>
 
+          <!-- Class Notes (Core Bullet Points) -->
           <div>
             <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Class Notes</h5>
             <ul class="space-y-2 text-xs sm:text-sm text-slate-300">
@@ -196,12 +200,71 @@
             </ul>
           </div>
 
+          <!-- Optional Pillars Grid (Day 1 Style) -->
+          {% if lecture.pillars and lecture.pillars|length > 0 %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            {% for pillar in lecture.pillars %}
+            <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+              <div class="text-xs font-bold text-indigo-300 font-mono">{{ pillar.name }}</div>
+              <div class="text-xs text-slate-400 mt-1 leading-relaxed">{{ pillar.desc }}</div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Reading & Practice Problems -->
           {% if lecture.reading or lecture.practice_problems %}
-          <div class="pt-3.5 border-t border-slate-800/70 text-xs text-slate-400 grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div class="pt-3 border-t border-slate-800/70 text-xs text-slate-400 grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div><strong class="text-slate-300 font-semibold">Reading:</strong> {{ lecture.reading }}</div>
             <div><strong class="text-slate-300 font-semibold">Practice:</strong> {{ lecture.practice_problems }}</div>
           </div>
           {% endif %}
+
+          <!-- Physical Class Notes Badges -->
+          {% if lecture.physical_notes and lecture.physical_notes|length > 0 %}
+          <div class="pt-3 border-t border-slate-800/70 flex flex-col sm:flex-row sm:items-center gap-2">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+              Physical / Board Notes:
+            </span>
+            <div class="flex flex-wrap gap-2">
+              {% for note in lecture.physical_notes %}
+              <a href="{{ note.url }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition shadow-sm">
+                <span>{{ note.title }}</span>
+                <span class="text-amber-400/70">&nearr;</span>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- AI Detailed Study Guide Accordion -->
+          {% if lecture.deep_dive and lecture.deep_dive|length > 0 %}
+          <div class="pt-1">
+            <details class="group rounded-xl border border-indigo-500/20 bg-indigo-950/20 open:bg-slate-950/70 transition-all duration-200">
+              <summary class="cursor-pointer list-none px-4 py-3 text-xs sm:text-sm font-semibold text-indigo-300 flex justify-between items-center select-none hover:text-indigo-200">
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-indigo-400 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  <span>AI Comprehensive Study Guide & Concept Breakdown</span>
+                </span>
+                <span class="text-[10px] font-mono uppercase text-indigo-400/70 group-open:hidden">Expand &darr;</span>
+                <span class="text-[10px] font-mono uppercase text-indigo-400/70 hidden group-open:inline">Collapse &uarr;</span>
+              </summary>
+              <div class="px-5 pb-5 pt-3 text-xs sm:text-sm text-slate-300 space-y-4 border-t border-indigo-500/20 mt-1 leading-relaxed">
+                {% for block in lecture.deep_dive %}
+                <div class="space-y-1.5">
+                  <h6 class="font-bold text-indigo-200 text-xs sm:text-sm flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                    {{ block.section }}
+                  </h6>
+                  <p class="text-slate-300 text-xs sm:text-sm pl-3 border-l border-indigo-500/30 leading-relaxed font-sans">{{ block.content }}</p>
+                </div>
+                {% endfor %}
+              </div>
+            </details>
+          </div>
+          {% endif %}
+
         </article>
         {% endfor %}
       </div>
@@ -234,7 +297,7 @@
     {% if is_admin %}
     <section id="section-admin" class="space-y-6 hidden">
       
-      <!-- Card 1: Next Topic Updater -->
+      <!-- Card 1: Next Topic Banner Updater -->
       <div class="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-6 space-y-4 shadow-xl">
         <div class="border-b border-slate-800 pb-3">
           <h3 class="text-base font-bold text-amber-300">Update "Next Lecture" Banner</h3>
@@ -247,7 +310,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="block text-slate-400 text-xs mb-1">Date</label>
-              <input type="text" name="date" value="{{ daily.next_topic.date if daily and daily.next_topic else 'September 9, 2026' }}" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition">
+              <input type="text" name="date" value="{{ daily.next_topic.date if daily and daily.next_topic else 'September 11, 2026' }}" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition">
             </div>
             <div>
               <label class="block text-slate-400 text-xs mb-1">Next Topic</label>

@@ -1,33 +1,52 @@
-{
-  "next_topic": {
-    "date": "September 14, 2026",
-    "topic": "Functions, Domain/Range & Graph Transformations",
-    "status": "Upcoming Monday Lecture",
-    "thomas_ref": "Sec 1.2 & 1.3 (p. 9)",
-    "thomas_url": "/books/thomas.pdf#page=17",
-    "focus_note": "Review standard function graphs, piecewise definitions, vertical/horizontal shifts, and composite functions."
+[
+  {
+    "id": 1,
+    "date": "September 8, 2026",
+    "topic": "Course Overview, What is Calculus & Functions",
+    "week": 1,
+    "core_points": [
+      "Calculus origin (Latin for pebble) and study of dynamic motion vs static algebra",
+      "The continuum of the Real line from -∞ to +∞",
+      "Functions as input-output machines: y = f(x)"
+    ],
+    "reading": "Thomas Sec 2.1 (p. 73)",
+    "practice_problems": "Review real line intervals, domain, and range.",
+    "physical_notes": [],
+    "deep_dive": []
   },
-  "upcoming_schedule": [
-    {
-      "day": "Day 1 (Sept 8)",
-      "topic": "Course Overview & Nature of Calculus",
-      "thomas_ref": "Sec 2.1 (p. 73)",
-      "thomas_url": "/books/thomas.pdf#page=99",
-      "problems": "Review course policy and syllabus breakdown"
-    },
-    {
-      "day": "Day 2 (Sept 9)",
-      "topic": "Real Numbers, Intervals & Inequalities",
-      "thomas_ref": "Sec 1.1 (p. 1)",
-      "thomas_url": "/books/thomas.pdf#page=9",
-      "problems": "Thomas Ex 1.1: #1–22"
-    },
-    {
-      "day": "Day 3 (Sept 10)",
-      "topic": "Lines, Circles & Functions Basics",
-      "thomas_ref": "Sec 1.2 & 1.3 (p. 9)",
-      "thomas_url": "/books/thomas.pdf#page=17",
-      "problems": "Thomas Ex 1.2: #1–16; Ex 1.3: #1–10"
-    }
-  ]
-}
+  {
+    "id": 2,
+    "date": "September 9, 2026",
+    "topic": "Real Numbers, Intervals, Absolute Value & Inequalities",
+    "week": 1,
+    "core_points": [
+      "Real number system hierarchy: N ⊂ Z ⊂ Q ⊂ R",
+      "Axiomatic properties: Algebraic, Order, and the Completeness Property",
+      "Finite and infinite intervals in set, interval, and graphical notations",
+      "Geometric and algebraic piecewise definitions of |x|",
+      "Linear inequality mechanics and negative sign reversal"
+    ],
+    "reading": "Thomas' Calculus Sec 1.1 (pp. 1–8)",
+    "practice_problems": "Thomas Ex 1.1 #1–22",
+    "physical_notes": [
+      {
+        "title": "Whiteboard Derivations & Board Notes",
+        "url": "/notes/day2_board.jpg"
+      }
+    ],
+    "deep_dive": [
+      {
+        "section": "1. The Axiom of Completeness",
+        "content": "Unlike the set of rational numbers Q, which contains infinitely many 'holes' (like √2 or π), the real line R is complete. Formally, every non-empty subset of R bounded above has a least upper bound (supremum). This property is foundational because limits and continuity cannot exist without it."
+      },
+      {
+        "section": "2. Absolute Value as 1D Metric Distance",
+        "content": "Rather than thinking of |x| merely as 'making a number positive', view it as the metric distance between two points. The inequality |x - c| < δ describes an open symmetric interval (c - δ, c + δ) centered at c with radius δ. This notation is the backbone for the formal (ε, δ) definition of limits coming up in Week 3."
+      },
+      {
+        "section": "3. Inequality Transversals & Sign Flips",
+        "content": "Multiplying or dividing an inequality by a negative number inverts the order relation. Geometrically, multiplying by -1 reflects the coordinate point across the origin, swapping the directional hierarchy on the real axis."
+      }
+    ]
+  }
+]
