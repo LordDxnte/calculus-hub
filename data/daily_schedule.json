@@ -1,33 +1,33 @@
 {
   "next_topic": {
     "date": "September 14, 2026",
-    "topic": "Functions, Domain/Range & Graph Transformations",
-    "status": "Upcoming Monday Lecture",
-    "thomas_ref": "Sec 1.2 & 1.3 (p. 9)",
-    "thomas_url": "/books/thomas.pdf#page=17",
-    "focus_note": "Review standard function graphs, piecewise definitions, vertical/horizontal shifts, and composite functions."
+    "topic": "Combining Functions, Shifts & Mathematical Models",
+    "status": "Upcoming",
+    "thomas_ref": "Sec 1.2 & 1.3 (pp. 9–26)",
+    "thomas_url": "https://github.com/LordDxnte/calculus-hub/releases/download/V1.0/thomas.pdf#page=17",
+    "focus_note": "Read Sec 1.2 on horizontal/vertical graph shifts f(x - c) + d before Friday's class. Try plotting them on the interactive grapher tab."
   },
   "upcoming_schedule": [
     {
-      "day": "Day 1 (Sept 8)",
-      "topic": "Course Overview & Nature of Calculus",
-      "thomas_ref": "Sec 2.1 (p. 73)",
-      "thomas_url": "/books/thomas.pdf#page=99",
-      "problems": "Review course policy and syllabus breakdown"
+      "day": "Day 1 (Tue)",
+      "topic": "Course Overview, What is Calculus & Functions",
+      "thomas_ref": "Ch. 1 Overview (pp. 1–4)",
+      "thomas_url": "https://github.com/LordDxnte/calculus-hub/releases/download/V1.0/thomas.pdf#page=9",
+      "problems": "Review real line & intervals"
     },
     {
-      "day": "Day 2 (Sept 9)",
-      "topic": "Real Numbers, Intervals & Inequalities",
-      "thomas_ref": "Sec 1.1 (p. 1)",
-      "thomas_url": "/books/thomas.pdf#page=9",
-      "problems": "Thomas Ex 1.1: #1–22"
+      "day": "Day 2 (Wed)",
+      "topic": "Real Numbers, Intervals, Absolute Value & Inequalities",
+      "thomas_ref": "Sec 1.1 (pp. 1–8)",
+      "thomas_url": "https://github.com/LordDxnte/calculus-hub/releases/download/V1.0/thomas.pdf#page=9",
+      "problems": "Ex 1.1 #1–22"
     },
     {
-      "day": "Day 3 (Sept 14)",
-      "topic": "Lines, Circles & Functions Basics",
-      "thomas_ref": "Sec 1.2 & 1.3 (p. 9)",
-      "thomas_url": "/books/thomas.pdf#page=17",
-      "problems": "Thomas Ex 1.2: #1–16; Ex 1.3: #1–10"
+      "day": "Day 3 (Mon)",
+      "topic": "Combining Functions, Shifts & Mathematical Models",
+      "thomas_ref": "Sec 1.2 & 1.3 (pp. 9–26)",
+      "thomas_url": "https://github.com/LordDxnte/calculus-hub/releases/download/V1.0/thomas.pdf#page=17",
+      "problems": "Ex 1.2 #1–16, Ex 1.3 #1–12"
     }
   ]
 }
