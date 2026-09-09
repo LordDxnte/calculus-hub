@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
@@ -411,7 +411,7 @@
             </div>
             <div>
               <label class="block text-slate-400 text-xs mb-1">PDF Direct URL / Page Link</label>
-              <input type="text" name="thomas_url" value="{{ daily.next_topic.thomas_url if daily and daily.next_topic else '/books/thomas.pdf#page=17' }}" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500">
+              <input type="text" name="thomas_url" value="{{ daily.next_topic.thomas_url if daily and daily.next_topic else 'https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=17' }}" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500">
             </div>
           </div>
 
