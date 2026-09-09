@@ -32,8 +32,6 @@ ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "calc_adm_change_me_in_vercel")
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "super-secret-calc-hub-session-salt-2026").encode()
 AUTH_COOKIE_NAME = "calc_hub_session"
 
-TEXTBOOK_CDN_URL = "https://github.com/LordDxnte/calculus-hub/releases/download/V1.0/thomas.pdf"
-
 def sign_session() -> str:
     return hmac.new(SESSION_SECRET, b"admin_authorized", hashlib.sha256).hexdigest()
 
@@ -113,11 +111,6 @@ def write_json(filename: str, payload: dict | list):
     path = DATA_DIR / filename
     with open(path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
-
-# --- Legacy Asset Redirect (Guarantees zero broken textbook links) ---
-@app.get("/books/thomas.pdf")
-def redirect_legacy_textbook():
-    return RedirectResponse(url=TEXTBOOK_CDN_URL, status_code=status.HTTP_301_MOVED_PERMANENTLY)
 
 # --- Primary Page Handlers (Matches all Vercel path variations) ---
 @app.get("/", response_class=HTMLResponse)
@@ -200,7 +193,7 @@ def update_schedule(
     date: str = Form(...),
     topic: str = Form(...),
     thomas_ref: str = Form(...),
-    thomas_url: str = Form(f"{TEXTBOOK_CDN_URL}#page=17"),
+    thomas_url: str = Form("/books/thomas.pdf#page=17"),
     focus_note: str = Form("")
 ):
     if not is_authenticated(request):
