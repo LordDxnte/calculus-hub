@@ -21,7 +21,18 @@
       }
     ],
     "reading": "Thomas/Stewart Calculus: Chapter 1 (Functions and Models)",
-    "practice_problems": "Review real line intervals, domain, and range."
+    "practice_problems": "Review real line intervals, domain, and range.",
+    "physical_notes": [],
+    "deep_dive": [
+      {
+        "section": "1. Static Algebra vs. Dynamic Analysis",
+        "content": "Elementary algebra and geometry solve problems involving constant rates and static configurations (such as constant velocity d = vt or the area of flat polygons). Calculus introduces the mathematics of change by approximating non-linear, dynamic processes with linear tangents through limit processes."
+      },
+      {
+        "section": "2. Functions as Deterministic Mappings",
+        "content": "A function f from a domain set D to a target set Y is a rule that assigns exactly one output f(x) to each input x. Graphically, this uniqueness condition is verified by the Vertical Line Test: no vertical line x = a may intersect the curve at more than one point."
+      }
+    ]
   },
   {
     "id": 2,
@@ -36,6 +47,34 @@
       "Inequality Rules: Preserving direction under addition/subtraction, reversing direction when multiplying/dividing by negatives, and solving linear inequalities"
     ],
     "reading": "Thomas' Calculus Sec 1.1 (pp. 1–8)",
-    "practice_problems": "Thomas Ex 1.1 #1–22 (Inequalities and Absolute Value)"
+    "practice_problems": "Thomas Ex 1.1 #1–22 (Inequalities and Absolute Value)",
+    "physical_notes": [
+      {
+        "title": "Notes (Page 1)",
+        "url": "/notes/day2_notes_p1.jpeg"
+      },
+      {
+        "title": "Notes (Page 2)",
+        "url": "/notes/day2_notes_p2.jpeg"
+      },
+      {
+        "title": "Notes (Page 3)",
+        "url": "/notes/day2_notes_p3.jpeg"
+      }
+    ],
+    "deep_dive": [
+      {
+        "section": "1. Number System Hierarchy & The Axiom of Completeness",
+        "content": "Numbers progress through nested subsets: Natural (N) ⊂ Integers (Z) ⊂ Rationals (Q) ⊂ Reals (R). While rational numbers are dense on the line (infinitely many fractions lie between any two numbers), Q contains infinitely many gaps (e.g., √2, e, π). The Completeness Axiom guarantees that the real line has zero missing points: every non-empty subset of R bounded above has a least upper bound (supremum) in R. Calculus limits depend directly on this unbroken continuum."
+      },
+      {
+        "section": "2. Metric Geometry of Absolute Value",
+        "content": "Algebraically, |x| is defined piecewise as x if x ≥ 0, and -x if x < 0. Geometrically, |a - b| measures the Euclidean 1D distance between points a and b on the real coordinate axis. An inequality like |x - c| < δ defines an open symmetric neighborhood (c - δ, c + δ) centered at c with radius δ—the exact structural formulation used in the formal (ε, δ) definition of limits."
+      },
+      {
+        "section": "3. Inequality Transversals & Sign Inversion",
+        "content": "Inequalities preserve their direction under addition and subtraction (a < b implies a + c < b + c). However, multiplying or dividing both sides by a negative scalar (c < 0) reverses the relation: a < b becomes ac > bc. Geometrically, multiplying by a negative number reflects points across the origin (0), which swaps their relative order on the axis."
+      }
+    ]
   }
 ]
