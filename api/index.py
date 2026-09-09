@@ -102,7 +102,7 @@ def load_json(filename: str):
     if not path.exists():
         return None
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8-sig") as f:
             return json.load(f)
     except Exception as e:
         print(f"[Error] Failed to read {filename}: {e}")
@@ -110,7 +110,7 @@ def load_json(filename: str):
 
 def write_json(filename: str, payload: dict | list):
     path = DATA_DIR / filename
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8-sig") as f:
         json.dump(payload, f, indent=2)
 
 # --- Legacy & Direct PDF Redirect ---

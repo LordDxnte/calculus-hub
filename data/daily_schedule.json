@@ -1,42 +1,33 @@
-python -c @"
-import json
-
-data = {
-  'next_topic': {
-    'date': 'September 14, 2026',
-    'topic': 'Combining Functions, Shifts & Mathematical Models',
-    'status': 'Upcoming',
-    'thomas_ref': 'Sec 1.2 & 1.3 (pp. 9-26)',
-    'thomas_url': 'https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=17',
-    'focus_note': 'Read Sec 1.2 on horizontal/vertical graph shifts f(x - c) + d before Monday class. Try plotting them on the interactive grapher tab.'
+{
+  "next_topic": {
+    "date": "September 14, 2026",
+    "topic": "Combining Functions, Shifts & Mathematical Models",
+    "status": "Upcoming",
+    "thomas_ref": "Sec 1.2 & 1.3 (pp. 9-26)",
+    "thomas_url": "https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=17",
+    "focus_note": "Read Sec 1.2 on horizontal/vertical graph shifts f(x - c) + d before Monday class. Try plotting them on the interactive grapher tab."
   },
-  'upcoming_schedule': [
+  "upcoming_schedule": [
     {
-      'day': 'Day 1 (Tue)',
-      'topic': 'Course Overview, What is Calculus & Functions',
-      'thomas_ref': 'Ch. 1 Overview (pp. 1-4)',
-      'thomas_url': 'https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=9',
-      'problems': 'Review real line & intervals'
+      "day": "Day 1 (Tue)",
+      "topic": "Course Overview, What is Calculus & Functions",
+      "thomas_ref": "Ch. 1 Overview (pp. 1-4)",
+      "thomas_url": "https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=9",
+      "problems": "Review real line & intervals"
     },
     {
-      'day': 'Day 2 (Wed)',
-      'topic': 'Real Numbers, Intervals, Absolute Value & Inequalities',
-      'thomas_ref': 'Sec 1.1 (pp. 1-8)',
-      'thomas_url': 'https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=9',
-      'problems': 'Ex 1.1 #1-22'
+      "day": "Day 2 (Wed)",
+      "topic": "Real Numbers, Intervals, Absolute Value & Inequalities",
+      "thomas_ref": "Sec 1.1 (pp. 1-8)",
+      "thomas_url": "https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=9",
+      "problems": "Ex 1.1 #1-22"
     },
     {
-      'day': 'Day 3 (Mon)',
-      'topic': 'Combining Functions, Shifts & Mathematical Models',
-      'thomas_ref': 'Sec 1.2 & 1.3 (pp. 9-26)',
-      'thomas_url': 'https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=17',
-      'problems': 'Ex 1.2 #1-16, Ex 1.3 #1-12'
+      "day": "Day 3 (Mon)",
+      "topic": "Combining Functions, Shifts & Mathematical Models",
+      "thomas_ref": "Sec 1.2 & 1.3 (pp. 9-26)",
+      "thomas_url": "https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf#page=17",
+      "problems": "Ex 1.2 #1-16, Ex 1.3 #1-12"
     }
   ]
 }
-
-with open('data/daily_schedule.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, indent=2)
-
-print('>>> daily_schedule.json updated with direct Blob URLs!')
-"@
