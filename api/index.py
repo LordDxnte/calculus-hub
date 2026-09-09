@@ -115,9 +115,13 @@ def write_json(filename: str, payload: dict | list):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
 
-# --- Routes ---
+# --- Primary Page Handlers (All Vercel path variations) ---
 @app.get("/", response_class=HTMLResponse)
 @app.get("/api", response_class=HTMLResponse)
+@app.get("/api/", response_class=HTMLResponse)
+@app.get("/api/index", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
+@app.get("/index.py", response_class=HTMLResponse)
 def read_root(request: Request):
     raw_lectures = load_json("lectures.json") or []
     raw_schedule = load_json("daily_schedule.json") or {}
@@ -155,6 +159,13 @@ def read_root(request: Request):
         }
     )
 
+# --- Direct Navigation Fallbacks ---
+@app.get("/admin", response_class=HTMLResponse)
+@app.get("/login", response_class=HTMLResponse)
+def handle_direct_auth_navigation():
+    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+# --- Authentication Routes ---
 @app.post("/login")
 def login(request: Request, response: Response, secret: str = Form(...)):
     if hmac.compare_digest(secret.strip(), ADMIN_SECRET):
@@ -178,6 +189,7 @@ def logout():
     resp.delete_cookie(AUTH_COOKIE_NAME)
     return resp
 
+# --- Admin Mutation Routes ---
 @app.post("/update-schedule")
 def update_schedule(
     request: Request,
@@ -243,3 +255,11 @@ def add_lecture(
     write_json("lectures.json", lectures)
 
     return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+# --- Universal Catch-All (Guarantees no raw 404 JSON for page routes) ---
+@app.get("/{full_path:path}", response_class=HTMLResponse)
+def catch_all(request: Request, full_path: str):
+    # Let missing physical assets (images/PDFs) 404 cleanly
+    if any(full_path.lower().endswith(ext) for ext in [".jpeg", ".jpg", ".png", ".pdf", ".css", ".js", ".ico"]):
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return read_root(request)
