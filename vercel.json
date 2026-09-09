@@ -1,5 +1,8 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index.py" }
+    {
+      "source": "/((?!books/|notes/|static/).*)",
+      "destination": "/api/index.py"
+    }
   ]
 }

@@ -22,8 +22,6 @@ PUBLIC_DIR = BASE_DIR / "public"
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-if (PUBLIC_DIR / "books").exists():
-    app.mount("/books", StaticFiles(directory=str(PUBLIC_DIR / "books")), name="books")
 
 if (PUBLIC_DIR / "notes").exists():
     app.mount("/notes", StaticFiles(directory=str(PUBLIC_DIR / "notes")), name="notes")
