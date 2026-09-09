@@ -5,32 +5,37 @@
     "topic": "Course Overview, What is Calculus & Functions",
     "week": 1,
     "core_points": [
-      "Calculus comes from the Latin word for 'pebble' (ancient counting tool).",
-      "Calculus deals with dynamic change and motion, contrasting static algebra.",
-      "Real number line: continuous points from -∞ to +∞.",
-      "Functions: y = f(x) where x is input and y is output."
+      "Calculus derives from the Latin word for pebble (ancient computational token).",
+      "Calculus analyzes dynamic change and motion, in contrast to static algebra ($d = vt$).",
+      "The real line is continuous without gaps from $-\\infty$ to $+\\infty$.",
+      "A function is a deterministic relation $y = f(x)$ where every input has exactly one output."
     ],
     "pillars": [
       {
         "name": "Differential Calculus",
-        "desc": "Splitting quantities into infinitesimally small pieces to compute rates of change."
+        "desc": "Splitting quantities into infinitesimal increments to determine instantaneous rates of change."
       },
       {
         "name": "Integral Calculus",
-        "desc": "Accumulating and summing small pieces to evaluate total areas and volumes."
+        "desc": "Accumulating continuous sums of infinitesimal slices to calculate total area, volume, and length."
       }
     ],
-    "reading": "Thomas/Stewart Calculus: Chapter 1 (Functions and Models)",
+    "reading": "Thomas' Calculus: Chapter 1 Overview",
     "practice_problems": "Review real line intervals, domain, and range.",
+    "practice_difficulty": "Easy",
+    "common_mistakes": [
+      "Confusing the function definition $f(x)$ with multiplication $f \\cdot x$.",
+      "Failing the Vertical Line Test: a circle $x^2 + y^2 = r^2$ is not a single function of $x$."
+    ],
     "physical_notes": [],
     "deep_dive": [
       {
         "section": "1. Static Algebra vs. Dynamic Analysis",
-        "content": "Elementary algebra and geometry solve problems involving constant rates and static configurations (such as constant velocity d = vt or the area of flat polygons). Calculus introduces the mathematics of change by approximating non-linear, dynamic processes with linear tangents through limit processes."
+        "content": "Elementary geometry computes areas of static polygons and constant velocities via $d = vt$. Calculus introduces the mathematics of change by approximating non-linear, dynamic curves with linear tangents through limit processes."
       },
       {
         "section": "2. Functions as Deterministic Mappings",
-        "content": "A function f from a domain set D to a target set Y is a rule that assigns exactly one output f(x) to each input x. Graphically, this uniqueness condition is verified by the Vertical Line Test: no vertical line x = a may intersect the curve at more than one point."
+        "content": "A function $f: D \\to Y$ assigns to each element $x \\in D$ exactly one element $f(x) \\in Y$. Graphically, this uniqueness condition is verified by the Vertical Line Test: no vertical line $x = a$ may intersect the curve at more than one coordinate point."
       }
     ]
   },
@@ -40,14 +45,20 @@
     "topic": "Real Numbers, Intervals, Absolute Value & Inequalities",
     "week": 1,
     "core_points": [
-      "The Real Number System: Natural numbers, Integers, Rationals, and the continuous real line (-∞ to +∞)",
-      "Three Core Properties of R: Algebraic properties, Order properties, and the Completeness property",
-      "Intervals (Finite vs. Infinite): Open, closed, and half-open subsets across set notation, interval notation, and graphical representation",
-      "Absolute Value (|x|): Geometric interpretation as distance from the origin and piecewise algebraic definition",
-      "Inequality Rules: Preserving direction under addition/subtraction, reversing direction when multiplying/dividing by negatives, and solving linear inequalities"
+      "Number hierarchy: $\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}$ along the unbroken real continuum.",
+      "Three Core Properties of $\\mathbb{R}$: Algebraic Field Axioms, Order Axioms, and the Completeness Axiom.",
+      "Intervals (Finite vs. Infinite): Open $(a, b)$, closed $[a, b]$, and half-open $[a, b)$ subsets.",
+      "Absolute Value: Geometrically, $|x - c|$ represents distance; algebraically defined as $x$ if $x \\ge 0$, and $-x$ if $x < 0$.",
+      "Inequality Transversals: $a < b \\implies a + c < b + c$, but $c < 0 \\implies ac > bc$ (sign reversal)."
     ],
     "reading": "Thomas' Calculus Sec 1.1 (pp. 1–8)",
-    "practice_problems": "Thomas Ex 1.1 #1–22 (Inequalities and Absolute Value)",
+    "practice_problems": "Thomas Ex 1.1 #1–22",
+    "practice_difficulty": "Medium",
+    "common_mistakes": [
+      "Multiplying an inequality by an algebraic variable without testing whether that variable is positive or negative.",
+      "Writing disjoint intervals with 'and' instead of set union notation: $(-\\infty, -2) \\cup (2, \\infty)$.",
+      "Treating $\\sqrt{x^2}$ as simply $x$ instead of the mathematically rigorous $|x|$."
+    ],
     "physical_notes": [
       {
         "title": "Notes (Page 1)",
@@ -64,16 +75,16 @@
     ],
     "deep_dive": [
       {
-        "section": "1. Number System Hierarchy & The Axiom of Completeness",
-        "content": "Numbers progress through nested subsets: Natural (N) ⊂ Integers (Z) ⊂ Rationals (Q) ⊂ Reals (R). While rational numbers are dense on the line (infinitely many fractions lie between any two numbers), Q contains infinitely many gaps (e.g., √2, e, π). The Completeness Axiom guarantees that the real line has zero missing points: every non-empty subset of R bounded above has a least upper bound (supremum) in R. Calculus limits depend directly on this unbroken continuum."
+        "section": "1. Number Hierarchy & The Completeness Axiom",
+        "content": "While rational numbers $\\mathbb{Q}$ are dense on the line, $\\mathbb{Q}$ contains infinitely many holes (e.g., $\\sqrt{2}$, $\\pi$, $e$). The Completeness Axiom guarantees that the real line $\\mathbb{R}$ has zero gaps: every non-empty subset $S \\subset \\mathbb{R}$ bounded above possesses a least upper bound (supremum) in $\\mathbb{R}$. Calculus limits depend directly on this unbroken continuum."
       },
       {
         "section": "2. Metric Geometry of Absolute Value",
-        "content": "Algebraically, |x| is defined piecewise as x if x ≥ 0, and -x if x < 0. Geometrically, |a - b| measures the Euclidean 1D distance between points a and b on the real coordinate axis. An inequality like |x - c| < δ defines an open symmetric neighborhood (c - δ, c + δ) centered at c with radius δ—the exact structural formulation used in the formal (ε, δ) definition of limits."
+        "content": "Algebraically, $|x|$ is defined piecewise. Geometrically, $|a - b|$ measures the Euclidean 1D distance between $a$ and $b$. Solving $|x - c| < \\delta$ defines an open symmetric neighborhood $(c - \\delta, c + \\delta)$ centered at $c$ with radius $\\delta$—the exact structural foundation for the formal $(\\varepsilon, \\delta)$ definition of limits."
       },
       {
-        "section": "3. Inequality Transversals & Sign Inversion",
-        "content": "Inequalities preserve their direction under addition and subtraction (a < b implies a + c < b + c). However, multiplying or dividing both sides by a negative scalar (c < 0) reverses the relation: a < b becomes ac > bc. Geometrically, multiplying by a negative number reflects points across the origin (0), which swaps their relative order on the axis."
+        "section": "3. Sign Inversion under Negative Multiplication",
+        "content": "Multiplying or dividing both sides of an inequality by a negative constant reverses the inequality sign: $a < b \\iff -a > -b$. Geometrically, multiplying by a negative scalar reflects points across the origin ($0$), inverting their directional order along the coordinate axis."
       }
     ]
   }
