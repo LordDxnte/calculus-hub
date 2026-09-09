@@ -6,7 +6,8 @@
     }
   ],
   "routes": [
-    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "handle": "filesystem" },
+    { "src": "/books/(.*)", "dest": "/books/$1" },
     { "src": "/(.*)", "dest": "api/index.py" }
   ]
 }
