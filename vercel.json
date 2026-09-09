@@ -1,13 +1,5 @@
 {
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/books/(.*)", "dest": "/books/$1" },
-    { "src": "/(.*)", "dest": "api/index.py" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index.py" }
   ]
 }
