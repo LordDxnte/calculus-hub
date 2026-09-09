@@ -1,9 +1,5 @@
-
-*.pdf
-static/books/*.pdf
-
-*.pdf
-static/books/*.pdf
-
-*.pdf
-static/books/*.pdf
+__pycache__/
+*.pyc
+.env
+.venv/
+env/
