@@ -27,7 +27,8 @@ if (PUBLIC_DIR / "notes").exists():
 
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-# --- Security Configuration ---
+# --- Storage & Security Configuration ---
+TEXTBOOK_CDN_URL = "https://nua0qfkaopphwwba.public.blob.vercel-storage.com/thomas.pdf"
 ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "calc_adm_change_me_in_vercel")
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "super-secret-calc-hub-session-salt-2026").encode()
 AUTH_COOKIE_NAME = "calc_hub_session"
@@ -112,6 +113,11 @@ def write_json(filename: str, payload: dict | list):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
 
+# --- Legacy & Direct PDF Redirect ---
+@app.get("/books/thomas.pdf")
+def redirect_textbook():
+    return RedirectResponse(url=TEXTBOOK_CDN_URL, status_code=status.HTTP_302_FOUND)
+
 # --- Primary Page Handlers (Matches all Vercel path variations) ---
 @app.get("/", response_class=HTMLResponse)
 @app.get("/api", response_class=HTMLResponse)
@@ -193,7 +199,7 @@ def update_schedule(
     date: str = Form(...),
     topic: str = Form(...),
     thomas_ref: str = Form(...),
-    thomas_url: str = Form("/books/thomas.pdf#page=17"),
+    thomas_url: str = Form(f"{TEXTBOOK_CDN_URL}#page=17"),
     focus_note: str = Form("")
 ):
     if not is_authenticated(request):
