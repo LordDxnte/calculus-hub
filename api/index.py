@@ -15,17 +15,13 @@ DATA_DIR = BASE_DIR / "data"
 STATIC_DIR = BASE_DIR / "static"
 PUBLIC_DIR = BASE_DIR / "public"
 
-# Mount static and public books so they work both locally and on Vercel
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 if (PUBLIC_DIR / "books").exists():
     app.mount("/books", StaticFiles(directory=str(PUBLIC_DIR / "books")), name="books")
-elif PUBLIC_DIR.exists():
-    app.mount("/books", StaticFiles(directory=str(PUBLIC_DIR)), name="books")
 
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
-
 ADMIN_SECRET = "secretpass"
 
 def read_json(filename: str):
@@ -52,7 +48,6 @@ def read_root(request: Request, admin: Optional[str] = None):
         study_plan = []
         
     daily_schedule = read_json("daily_schedule.json")
-    
     is_admin = bool(admin and admin.strip() == ADMIN_SECRET)
 
     return templates.TemplateResponse(
@@ -64,17 +59,6 @@ def read_root(request: Request, admin: Optional[str] = None):
             "daily": daily_schedule,
             "is_admin": is_admin,
             "admin_query": admin if is_admin else ""
-        }
-    )
-
-@app.get("/reader", response_class=HTMLResponse)
-def pdf_reader(request: Request, page: int = 1):
-    return templates.TemplateResponse(
-        request=request,
-        name="reader.html",
-        context={
-            "page": page,
-            "pdf_url": "/books/thomas.pdf"
         }
     )
 
@@ -92,13 +76,9 @@ def update_schedule(
     if not isinstance(data, dict):
         data = {}
     
-    # Automatically direct links to /reader?page=N so mobile jumps to the exact page
-    current_topic = data.get("next_topic", {})
     page_match = re.search(r"p\.?\s*(\d+)", thomas_ref, re.IGNORECASE)
-    if page_match:
-        thomas_url = f"/reader?page={page_match.group(1)}"
-    else:
-        thomas_url = current_topic.get("thomas_url", "/reader?page=1")
+    page_num = page_match.group(1) if page_match else "1"
+    thomas_url = f"/books/thomas.pdf#page={page_num}"
 
     data["next_topic"] = {
         "date": date.strip(),
