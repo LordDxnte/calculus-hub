@@ -18,10 +18,9 @@ DATA_DIR = BASE_DIR / "data"
 STATIC_DIR = BASE_DIR / "static"
 PUBLIC_DIR = BASE_DIR / "public"
 
-# Static directory mounts
+# --- Static Directory Mounts ---
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
-
 
 if (PUBLIC_DIR / "notes").exists():
     app.mount("/notes", StaticFiles(directory=str(PUBLIC_DIR / "notes")), name="notes")
@@ -32,6 +31,8 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "calc_adm_change_me_in_vercel")
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "super-secret-calc-hub-session-salt-2026").encode()
 AUTH_COOKIE_NAME = "calc_hub_session"
+
+TEXTBOOK_CDN_URL = "https://github.com/LordDxnte/calculus-hub/releases/download/V1.0/thomas.pdf"
 
 def sign_session() -> str:
     return hmac.new(SESSION_SECRET, b"admin_authorized", hashlib.sha256).hexdigest()
@@ -113,7 +114,12 @@ def write_json(filename: str, payload: dict | list):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
 
-# --- Primary Page Handlers (All Vercel path variations) ---
+# --- Legacy Asset Redirect (Guarantees zero broken textbook links) ---
+@app.get("/books/thomas.pdf")
+def redirect_legacy_textbook():
+    return RedirectResponse(url=TEXTBOOK_CDN_URL, status_code=status.HTTP_301_MOVED_PERMANENTLY)
+
+# --- Primary Page Handlers (Matches all Vercel path variations) ---
 @app.get("/", response_class=HTMLResponse)
 @app.get("/api", response_class=HTMLResponse)
 @app.get("/api/", response_class=HTMLResponse)
@@ -194,7 +200,7 @@ def update_schedule(
     date: str = Form(...),
     topic: str = Form(...),
     thomas_ref: str = Form(...),
-    thomas_url: str = Form("/books/thomas.pdf#page=1"),
+    thomas_url: str = Form(f"{TEXTBOOK_CDN_URL}#page=17"),
     focus_note: str = Form("")
 ):
     if not is_authenticated(request):
@@ -254,10 +260,9 @@ def add_lecture(
 
     return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
-# --- Universal Catch-All (Guarantees no raw 404 JSON for page routes) ---
+# --- Universal Catch-All (Prevents raw 404 JSON for page routes) ---
 @app.get("/{full_path:path}", response_class=HTMLResponse)
 def catch_all(request: Request, full_path: str):
-    # Let missing physical assets (images/PDFs) 404 cleanly
     if any(full_path.lower().endswith(ext) for ext in [".jpeg", ".jpg", ".png", ".pdf", ".css", ".js", ".ico"]):
         raise HTTPException(status_code=404, detail="Asset not found")
     return read_root(request)
