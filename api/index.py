@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, Request, Form
@@ -12,14 +13,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / "templates"
 DATA_DIR = BASE_DIR / "data"
 STATIC_DIR = BASE_DIR / "static"
+PUBLIC_DIR = BASE_DIR / "public"
 
-# Mount static files correctly right after app initialization
+# Mount static and public books so they work both locally (uvicorn) and on Vercel
 if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
+if (PUBLIC_DIR / "books").exists():
+    app.mount("/books", StaticFiles(directory=str(PUBLIC_DIR / "books")), name="books")
+elif PUBLIC_DIR.exists():
+    app.mount("/books", StaticFiles(directory=str(PUBLIC_DIR)), name="books")
+
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-# Replace with your desired password
 ADMIN_SECRET = "secretpass"
 
 def read_json(filename: str):
@@ -65,20 +71,30 @@ def read_root(request: Request, admin: Optional[str] = None):
 def update_schedule(
     date: str = Form(...),
     topic: str = Form(...),
-    swokowski_ref: str = Form(...),
     thomas_ref: str = Form(...),
-    focus_note: str = Form(...),
+    focus_note: str = Form(""),
+    swokowski_ref: str = Form(""),
     admin_secret: str = Form("")
 ):
     path = DATA_DIR / "daily_schedule.json"
     data = read_json("daily_schedule.json")
+    if not isinstance(data, dict):
+        data = {}
     
+    # Extract page number automatically if specified like "(p. 27)" or default to current
+    current_topic = data.get("next_topic", {})
+    page_match = re.search(r"p\.?\s*(\d+)", thomas_ref, re.IGNORECASE)
+    if page_match:
+        thomas_url = f"/books/thomas.pdf#page={page_match.group(1)}"
+    else:
+        thomas_url = current_topic.get("thomas_url", "/books/thomas.pdf")
+
     data["next_topic"] = {
         "date": date.strip(),
         "topic": topic.strip(),
         "status": "Upcoming",
-        "swokowski_ref": swokowski_ref.strip(),
         "thomas_ref": thomas_ref.strip(),
+        "thomas_url": thomas_url,
         "focus_note": focus_note.strip()
     }
     

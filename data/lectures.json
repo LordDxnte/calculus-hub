@@ -22,5 +22,20 @@
     ],
     "reading": "Thomas/Stewart Calculus: Chapter 1 (Functions and Models)",
     "practice_problems": "Review real line intervals, domain, and range."
+  },
+  {
+    "id": 2,
+    "date": "September 9, 2026",
+    "topic": "Real Numbers, Intervals, Absolute Value & Inequalities",
+    "week": 1,
+    "core_points": [
+      "The Real Number System: Natural numbers, Integers, Rationals, and the continuous real line (-∞ to +∞)",
+      "Three Core Properties of R: Algebraic properties, Order properties, and the Completeness property",
+      "Intervals (Finite vs. Infinite): Open, closed, and half-open subsets across set notation, interval notation, and graphical representation",
+      "Absolute Value (|x|): Geometric interpretation as distance from the origin and piecewise algebraic definition",
+      "Inequality Rules: Preserving direction under addition/subtraction, reversing direction when multiplying/dividing by negatives, and solving linear inequalities"
+    ],
+    "reading": "Thomas' Calculus Sec 1.1 (pp. 1–8)",
+    "practice_problems": "Thomas Ex 1.1 #1–22 (Inequalities and Absolute Value)"
   }
 ]
